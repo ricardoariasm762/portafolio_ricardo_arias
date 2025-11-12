@@ -22,7 +22,7 @@ export default function Habilidades() {
     {
       titulo: t("projects.interfaces.title"),
       descripcion: t("projects.interfaces.desc"),
-      imagen: "/project1.png",
+      imagenes: ["/interfaz1.png", "/interfaz2.png"],
     },
     {
       titulo: t("projects.paginas.title"),
@@ -100,20 +100,61 @@ export default function Habilidades() {
         </p>
 
         {/* Slider principal */}
-        <div className="relative flex justify-center items-center">
-          <div className="w-full max-w-5xl overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${index * 100}%)` }}
-            >
-              {habilidades.map((hab, i) => (
-                <div key={i} className="min-w-full flex justify-center items-center">
-                  <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-3xl w-72 h-[400px] flex flex-col justify-center items-center text-center">
-                    <h3 className="font-semibold text-lg">{hab.nombre}</h3>
-                    <p className="text-[color:var(--muted)] text-sm mt-3 px-4">{hab.desc}</p>
-                  </div>
-                </div>
-              ))}
+        <div className="relative flex justify-center items-center" style={{ perspective: "1000px" }}>
+          <div className="w-full max-w-5xl overflow-visible">
+            <div className="relative h-[400px] flex items-center justify-center">
+              {habilidades.map((hab, i) => {
+                const diff = i - index;
+                const isActive = diff === 0;
+                const isPrev = diff === -1;
+                const isNext = diff === 1;
+                const isVisible = Math.abs(diff) <= 1;
+                
+                if (!isVisible) return null;
+                
+                let scale, translateX, zIndex, opacity;
+                
+                if (isActive) {
+                  // Tarjeta actual: al frente, centro
+                  scale = 1;
+                  translateX = 0;
+                  zIndex = 10;
+                  opacity = 1;
+                } else if (isPrev) {
+                  // Tarjeta anterior: atrás, izquierda
+                  scale = 0.75;
+                  translateX = -35;
+                  zIndex = 5;
+                  opacity = 0.6;
+                } else if (isNext) {
+                  // Tarjeta siguiente: atrás, derecha
+                  scale = 0.75;
+                  translateX = 35;
+                  zIndex = 5;
+                  opacity = 0.6;
+                }
+                
+                return (
+                  <motion.div
+                    key={i}
+                    className="absolute flex justify-center items-center"
+                    initial={false}
+                    animate={{
+                      scale,
+                      x: `${translateX}%`,
+                      opacity,
+                      z: isActive ? 0 : -100,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    style={{ zIndex }}
+                  >
+                    <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-3xl w-72 h-[400px] flex flex-col justify-center items-center text-center shadow-lg">
+                      <h3 className="font-semibold text-lg">{hab.nombre}</h3>
+                      <p className="text-[color:var(--muted)] text-sm mt-3 px-4">{hab.desc}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -142,15 +183,30 @@ export default function Habilidades() {
       {/* 🔹 ACERCA DE MÍ */}
       <section
         id="acerca"
-        className="py-16 px-10 flex flex-col md:flex-row items-center justify-between rounded-t-[60px] bg-[color:var(--surface)] text-[color:var(--foreground)]"
+        className="py-16 px-10 relative overflow-visible flex flex-col md:flex-row items-start justify-between rounded-4xl bg-[#030024] text-white"
       >
-        <div className="md:w-1/2 space-y-4">
-          <h2 className="text-3xl font-bold">{t("sections.about.title")}</h2>
-          <p className="leading-relaxed">
-            {t("about.paragraph")}
+        <div className="md:w-1/2 space-y-4 z-10">
+          <h2 className="text-3xl font-bold mb-6 text-white">{t("sections.about.title")}</h2>
+          <p className="leading-relaxed mb-4 text-white">
+            {t("about.paragraph1")}
+          </p>
+          <p className="leading-relaxed mb-4 text-white">
+            {t("about.paragraph2")}
+          </p>
+          <p className="leading-relaxed mb-4 text-white">
+            {t("about.paragraph3")}
+          </p>
+          <p className="leading-relaxed text-white">
+            {t("about.paragraph4")}
           </p>
         </div>
-        <img src="/laptop.png" alt="Laptop" className="w-80 mt-10 md:mt-0" />
+        <div className="relative w-full md:w-1/2 mt-10 md:mt-0 flex justify-center md:justify-end items-start">
+          <img 
+            src="/laptop.png" 
+            alt="Laptop" 
+            className="w-full max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10 md:-mt-50 lg:-mt-40 object-contain" 
+          />
+        </div>
       </section>
 
       {/* 🔹 PROYECTOS CON ACORDEÓN */}
@@ -161,7 +217,7 @@ export default function Habilidades() {
           {proyectos.map((proyecto, i) => (
             <div
               key={i}
-              className="bg-[color:var(--surface)] shadow-md rounded-2xl overflow-hidden border border-[color:var(--border)]"
+              className="bg-[#2831A7] shadow-md rounded-2xl overflow-hidden border border-[color:var(--border)]"
             >
               <button
                 onClick={() => toggleAcordeon(i)}
@@ -179,13 +235,27 @@ export default function Habilidades() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4 }}
                     className="px-6 pb-6"
+                    style={{ backgroundColor: "rgba(128, 128, 128, 0.1)" }}
                   >
                     <p className="text-[color:var(--muted)] mb-4">{proyecto.descripcion}</p>
-                    <img
-                      src={proyecto.imagen}
-                      alt={proyecto.titulo}
-                      className="rounded-lg shadow-md w-full h-56 object-cover"
-                    />
+                    {proyecto.imagenes ? (
+                      <div className="flex flex-row gap-4">
+                        {proyecto.imagenes.map((img, idx) => (
+                          <img
+                            key={idx}
+                            src={img}
+                            alt={`${proyecto.titulo} - ${idx + 1}`}
+                            className="rounded-lg shadow-md w-1/2 h-56 object-cover"
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <img
+                        src={proyecto.imagen}
+                        alt={proyecto.titulo}
+                        className="rounded-lg shadow-md w-full h-56 object-cover"
+                      />
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -198,20 +268,20 @@ export default function Habilidades() {
       <section id="testimonios" className="py-20 px-10 text-center bg-[color:var(--surface)]">
         <h2 className="text-3xl font-bold mb-8">{t("sections.testimonials.title")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-[color:var(--surface)] shadow-md rounded-2xl p-6 border border-[color:var(--border)]">
-            <p className="text-[color:var(--muted)] mb-4">“{t("testimonials.one.text") }”</p>
+          <div className="shadow-md rounded-2xl p-6 border border-[color:var(--border)]" style={{ backgroundColor: "var(--testimonial-bg)", color: "var(--testimonial-text)" }}>
+            <p className="mb-4">"{t("testimonials.one.text") }"</p>
             <h4 className="font-semibold">Andres Parra</h4>
-            <span className="text-sm text-[color:var(--muted)]">Profesor - Pasto</span>
+            <span className="text-sm opacity-70">Pasto - Nariño</span>
           </div>
-          <div className="bg-[color:var(--surface)] shadow-md rounded-2xl p-6 border border-[color:var(--border)]">
-            <p className="text-[color:var(--muted)] mb-4">“{t("testimonials.two.text") }”</p>
+          <div className="shadow-md rounded-2xl p-6 border border-[color:var(--border)]" style={{ backgroundColor: "var(--testimonial-bg)", color: "var(--testimonial-text)" }}>
+            <p className="mb-4">"{t("testimonials.two.text") }"</p>
             <h4 className="font-semibold">Cristian Gómez</h4>
-            <span className="text-sm text-[color:var(--muted)]">Proyecto - Nariño</span>
+            <span className="text-sm opacity-70">Pasto - Nariño</span>
           </div>
-          <div className="bg-[color:var(--surface)] shadow-md rounded-2xl p-6 border border-[color:var(--border)]">
-            <p className="text-[color:var(--muted)] mb-4">“{t("testimonials.three.text") }”</p>
+          <div className="shadow-md rounded-2xl p-6 border border-[color:var(--border)]" style={{ backgroundColor: "var(--testimonial-bg)", color: "var(--testimonial-text)" }}>
+            <p className="mb-4">"{t("testimonials.three.text") }"</p>
             <h4 className="font-semibold">Nicolas Wagmim</h4>
-            <span className="text-sm text-[color:var(--muted)]">Profesor - Nariño</span>
+            <span className="text-sm opacity-70">Pasto - Nariño</span>
           </div>
         </div>
       </section>
@@ -219,20 +289,61 @@ export default function Habilidades() {
       {/* EXPERIENCIA (con slider como habilidades) */}
       <section id="experiencia" className="py-20 px-6 text-center relative">
         <h2 className="text-3xl font-bold mb-6">{t("sections.experience.title")}</h2>
-        <div className="relative flex justify-center items-center">
-          <div className="w-full max-w-5xl overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${indexExp * 100}%)` }}
-            >
-              {experiencias.map((exp, i) => (
-                <div key={i} className="min-w-full flex justify-center items-center">
-                  <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-3xl w-72 h-[400px] flex flex-col justify-center items-center text-center">
-                    <h3 className="font-semibold text-lg">{exp.titulo}</h3>
-                    <p className="text-[color:var(--muted)] text-sm mt-3 px-4">{exp.desc}</p>
-                  </div>
-                </div>
-              ))}
+        <div className="relative flex justify-center items-center" style={{ perspective: "1000px" }}>
+          <div className="w-full max-w-5xl overflow-visible">
+            <div className="relative h-[400px] flex items-center justify-center">
+              {experiencias.map((exp, i) => {
+                const diff = i - indexExp;
+                const isActive = diff === 0;
+                const isPrev = diff === -1;
+                const isNext = diff === 1;
+                const isVisible = Math.abs(diff) <= 1;
+                
+                if (!isVisible) return null;
+                
+                let scale, translateX, zIndex, opacity;
+                
+                if (isActive) {
+                  // Tarjeta actual: al frente, centro
+                  scale = 1;
+                  translateX = 0;
+                  zIndex = 10;
+                  opacity = 1;
+                } else if (isPrev) {
+                  // Tarjeta anterior: atrás, izquierda
+                  scale = 0.75;
+                  translateX = -35;
+                  zIndex = 5;
+                  opacity = 0.6;
+                } else if (isNext) {
+                  // Tarjeta siguiente: atrás, derecha
+                  scale = 0.75;
+                  translateX = 35;
+                  zIndex = 5;
+                  opacity = 0.6;
+                }
+                
+                return (
+                  <motion.div
+                    key={i}
+                    className="absolute flex justify-center items-center"
+                    initial={false}
+                    animate={{
+                      scale,
+                      x: `${translateX}%`,
+                      opacity,
+                      z: isActive ? 0 : -100,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    style={{ zIndex }}
+                  >
+                    <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-3xl w-72 h-[400px] flex flex-col justify-center items-center text-center shadow-lg">
+                      <h3 className="font-semibold text-lg">{exp.titulo}</h3>
+                      <p className="text-[color:var(--muted)] text-sm mt-3 px-4">{exp.desc}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>

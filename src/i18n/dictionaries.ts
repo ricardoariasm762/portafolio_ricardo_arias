@@ -31,9 +31,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
     "lang.es": "ES",
     "lang.en": "EN",
 
-    // About paragraph
-    "about.paragraph":
-      "Desde pequeño descubrí en el diseño gráfico una forma de dar vida a las ideas. Hoy estudio Ingeniería de Software donde combino mi creatividad con el razonamiento lógico para resolver problemas. He trabajado con tecnologías como Angular, Python, TypeScript, y Java.",
+    // About paragraphs
+    "about.paragraph1":
+      "Desde pequeño descubrí en el diseño gráfico una forma de dar vida a las ideas, y con el tiempo encontré en la Ingeniería de Software la posibilidad de transformar esa creatividad en soluciones digitales reales.",
+    "about.paragraph2":
+      "Me gradué del colegio La Rosa en 2017, estudié un técnico en Investigación Judicial y dos semestres de Química en la Universidad de Nariño, pero mi verdadera pasión apareció frente a la pantalla: programar, diseñar e imaginar interfaces que conecten con las personas.",
+    "about.paragraph3":
+      "Hoy curso el quinto semestre de Ingeniería de Software, donde combino mi experiencia en diseño con mis conocimientos en programación. He trabajado con lenguajes como Java, Python, JavaScript, TypeScript y C#, junto con bases de datos como MySQL y MongoDB. Además, mi experiencia en Gráficas AM Pasto me ha dado un enfoque práctico y creativo para comunicar visualmente cada proyecto.",
+    "about.paragraph4":
+      "Me considero curioso, autodidacta y apasionado por aprender, porque creo que la tecnología es más poderosa cuando logra resolver problemas reales y acercarse a las personas que la usan.",
 
     // Projects
     "projects.interfaces.title": "Interfaces de Software",
@@ -47,9 +53,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       "App creada con Node.js y MongoDB para gestionar proyectos de forma colaborativa. Incluye autenticación y CRUD completo.",
 
     // Testimonials
-    "testimonials.one.text": "Ricardo se destaca por su dedicación y compromiso con cada proyecto...",
-    "testimonials.two.text": "Trabajar con Ricardo fue una experiencia enriquecedora...",
-    "testimonials.three.text": "Ricardo es responsable, creativo y domina el diseño digital...",
+    "testimonials.one.text": "Ricardo se destaca por su disciplina y compromiso con cada proyecto. Tiene la capacidad de integrar la lógica de la programación con la creatividad del diseño, lo que le permite presentar soluciones completas y bien pensadas.",
+    "testimonials.two.text": "Trabajar con Ricardo en proyectos universitarios ha sido una experiencia enriquecedora. Su habilidad para manejar distintos lenguajes de programación y su disposición para colaborar hacen que el trabajo en equipo sea más fluido. Siempre aporta ideas innovadoras y busca mejorar la experiencia del usuario en cada interfaz.",
+    "testimonials.three.text": "Ricardo es responsable, creativo y domina el diseño digital y el desarrollo de software en equipo.",
 
     // Experience
     "experience.tecInv.title": "Técnico Investigación Judicial",
@@ -87,9 +93,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
     "lang.es": "ES",
     "lang.en": "EN",
 
-    // About paragraph
-    "about.paragraph":
-      "Since I was young, I found in graphic design a way to bring ideas to life. Today I study Software Engineering, combining creativity with logical reasoning to solve problems. I have worked with technologies such as Angular, Python, TypeScript, and Java.",
+    // About paragraphs
+    "about.paragraph1":
+      "Since I was young, I found in graphic design a way to bring ideas to life, and over time I found in Software Engineering the possibility of transforming that creativity into real digital solutions.",
+    "about.paragraph2":
+      "I graduated from La Rosa school in 2017, studied a technical degree in Judicial Investigation and two semesters of Chemistry at the University of Nariño, but my true passion appeared in front of the screen: programming, designing and imagining interfaces that connect with people.",
+    "about.paragraph3":
+      "Today I am in my fifth semester of Software Engineering, where I combine my design experience with my programming knowledge. I have worked with languages such as Java, Python, JavaScript, TypeScript and C#, along with databases like MySQL and MongoDB. Additionally, my experience at Gráficas AM Pasto has given me a practical and creative approach to visually communicate each project.",
+    "about.paragraph4":
+      "I consider myself curious, self-taught and passionate about learning, because I believe technology is more powerful when it manages to solve real problems and get closer to the people who use it.",
 
     // Projects
     "projects.interfaces.title": "Software Interfaces",

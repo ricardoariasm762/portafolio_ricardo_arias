@@ -8,12 +8,12 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-cover bg-center h-[500px] flex items-center justify-between px-10 md:px-20"
-      style={{ backgroundImage: "url('/background.jpg')" }}
+      className="relative bg-cover bg-center bg-no-repeat h-[500px] flex items-center justify-between px-10 md:px-20"
+      style={{ backgroundImage: "url('/hero.jpg')" }}
     >
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/30"></div>
 
-      <div className="relative z-10 bg-[color:var(--surface)]/70 backdrop-blur-md shadow-lg px-10 py-8 rounded-r-3xl w-fit ml-0 mt-10 md:mt-0 md:ml-0 md:translate-x-0 text-[color:var(--foreground)]">
+      <div className="relative z-10 bg-[color:var(--surface)]/70 backdrop-blur-md shadow-lg px-10 py-8 rounded-3xl w-fit ml-0 mt-10 md:mt-0 md:ml-0 md:translate-x-0 text-[color:var(--foreground)]">
         <h1 className="text-4xl font-bold mb-2">{t("hero.greeting")}</h1>
         <p className="mb-6 text-lg max-w-md text-[color:var(--muted)]">
           {t("hero.description")}
