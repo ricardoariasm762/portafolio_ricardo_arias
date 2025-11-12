@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
@@ -183,29 +184,34 @@ export default function Habilidades() {
       {/* 🔹 ACERCA DE MÍ */}
       <section
         id="acerca"
-        className="py-16 px-10 relative overflow-visible flex flex-col md:flex-row items-start justify-between rounded-4xl bg-[#030024] text-white"
+        className="py-16 px-6 sm:px-10 relative overflow-visible flex flex-col md:flex-row items-start justify-between rounded-4xl bg-[#030024] text-white"
       >
-        <div className="md:w-1/2 space-y-4 z-10">
-          <h2 className="text-3xl font-bold mb-6 text-white">{t("sections.about.title")}</h2>
-          <p className="leading-relaxed mb-4 text-white">
-            {t("about.paragraph1")}
-          </p>
-          <p className="leading-relaxed mb-4 text-white">
-            {t("about.paragraph2")}
-          </p>
-          <p className="leading-relaxed mb-4 text-white">
-            {t("about.paragraph3")}
-          </p>
-          <p className="leading-relaxed text-white">
-            {t("about.paragraph4")}
-          </p>
-        </div>
-        <div className="relative w-full md:w-1/2 mt-10 md:mt-0 flex justify-center md:justify-end items-start">
-          <img 
+        {/* Laptop - arriba en móvil/tablet, derecha en desktop */}
+        <div className="relative w-full md:w-1/2 mb-6 md:mb-0 md:order-2 flex justify-center md:justify-end items-start">
+          <Image 
             src="/laptop.png" 
             alt="Laptop" 
-            className="w-full max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10 md:-mt-50 lg:-mt-40 object-contain" 
+            width={800}
+            height={600}
+            className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10 -mt-8 sm:-mt-12 md:-mt-0 lg:-mt-40 object-contain" 
           />
+        </div>
+        
+        {/* Texto - abajo en móvil/tablet, izquierda en desktop */}
+        <div className="md:w-1/2 md:order-1 space-y-4 z-10">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">{t("sections.about.title")}</h2>
+          <p className="leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base text-white">
+            {t("about.paragraph1")}
+          </p>
+          <p className="leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base text-white">
+            {t("about.paragraph2")}
+          </p>
+          <p className="leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base text-white">
+            {t("about.paragraph3")}
+          </p>
+          <p className="leading-relaxed text-sm sm:text-base text-white">
+            {t("about.paragraph4")}
+          </p>
         </div>
       </section>
 
@@ -241,18 +247,22 @@ export default function Habilidades() {
                     {proyecto.imagenes ? (
                       <div className="flex flex-row gap-4">
                         {proyecto.imagenes.map((img, idx) => (
-                          <img
+                          <Image
                             key={idx}
                             src={img}
                             alt={`${proyecto.titulo} - ${idx + 1}`}
+                            width={500}
+                            height={224}
                             className="rounded-lg shadow-md w-1/2 h-56 object-cover"
                           />
                         ))}
                       </div>
                     ) : (
-                      <img
+                      <Image
                         src={proyecto.imagen}
                         alt={proyecto.titulo}
+                        width={800}
+                        height={224}
                         className="rounded-lg shadow-md w-full h-56 object-cover"
                       />
                     )}
@@ -269,17 +279,17 @@ export default function Habilidades() {
         <h2 className="text-3xl font-bold mb-8">{t("sections.testimonials.title")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="shadow-md rounded-2xl p-6 border border-[color:var(--border)]" style={{ backgroundColor: "var(--testimonial-bg)", color: "var(--testimonial-text)" }}>
-            <p className="mb-4">"{t("testimonials.one.text") }"</p>
+            <p className="mb-4">&ldquo;{t("testimonials.one.text")}&rdquo;</p>
             <h4 className="font-semibold">Andres Parra</h4>
             <span className="text-sm opacity-70">Pasto - Nariño</span>
           </div>
           <div className="shadow-md rounded-2xl p-6 border border-[color:var(--border)]" style={{ backgroundColor: "var(--testimonial-bg)", color: "var(--testimonial-text)" }}>
-            <p className="mb-4">"{t("testimonials.two.text") }"</p>
+            <p className="mb-4">&ldquo;{t("testimonials.two.text")}&rdquo;</p>
             <h4 className="font-semibold">Cristian Gómez</h4>
             <span className="text-sm opacity-70">Pasto - Nariño</span>
           </div>
           <div className="shadow-md rounded-2xl p-6 border border-[color:var(--border)]" style={{ backgroundColor: "var(--testimonial-bg)", color: "var(--testimonial-text)" }}>
-            <p className="mb-4">"{t("testimonials.three.text") }"</p>
+            <p className="mb-4">&ldquo;{t("testimonials.three.text")}&rdquo;</p>
             <h4 className="font-semibold">Nicolas Wagmim</h4>
             <span className="text-sm opacity-70">Pasto - Nariño</span>
           </div>

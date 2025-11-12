@@ -11,11 +11,6 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-function getSystemPrefersDark(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 function applyThemeToDocument(choice: ThemeChoice) {
   const root = document.documentElement;
   if (choice === "system") {
@@ -60,6 +55,7 @@ export function useTheme() {
   if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
   return ctx;
 }
+
 
 
 
