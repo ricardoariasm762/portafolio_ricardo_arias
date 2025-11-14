@@ -7,35 +7,23 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import { useI18n } from "../i18n/I18nProvider";
+import { SiHtml5, SiCss3, SiJavascript, SiReact, SiAngular, SiNodedotjs } from "react-icons/si";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 export default function Habilidades() {
   const { t } = useI18n();
   const habilidades = [
-    { nombre: "HTML", desc: "Estructuración semántica de páginas web." },
-    { nombre: "CSS", desc: "Diseño adaptable y uso de frameworks modernos." },
-    { nombre: "JavaScript", desc: "Desarrollo dinámico del lado del cliente." },
-    { nombre: "React", desc: "Creación de interfaces interactivas y reactivas." },
-    { nombre: "Angular", desc: "Desarrollo de aplicaciones SPA estructuradas." },
-    { nombre: "Node.js", desc: "Desarrollo backend eficiente y escalable." },
+    { nombre: "HTML", desc: "Estructuración semántica de páginas web.", icon: SiHtml5, color: "#E34F26" },
+    { nombre: "CSS", desc: "Diseño adaptable y uso de frameworks modernos.", icon: SiCss3, color: "#1572B6" },
+    { nombre: "JavaScript", desc: "Desarrollo dinámico del lado del cliente.", icon: SiJavascript, color: "#F7DF1E" },
+    { nombre: "React", desc: "Creación de interfaces interactivas y reactivas.", icon: SiReact, color: "#61DAFB" },
+    { nombre: "Angular", desc: "Desarrollo de aplicaciones SPA estructuradas.", icon: SiAngular, color: "#DD0031" },
+    { nombre: "Node.js", desc: "Desarrollo backend eficiente y escalable.", icon: SiNodedotjs, color: "#339933" },
   ];
 
-  const proyectos = [
-    {
-      titulo: t("projects.interfaces.title"),
-      descripcion: t("projects.interfaces.desc"),
-      imagenes: ["/interfaz1.png", "/interfaz2.png"],
-    },
-    {
-      titulo: t("projects.paginas.title"),
-      descripcion: t("projects.paginas.desc"),
-      imagen: "/project2.png",
-    },
-    {
-      titulo: t("projects.tareas.title"),
-      descripcion: t("projects.tareas.desc"),
-      imagen: "/project3.png",
-    },
-  ];
+  // Estado para repositorios de GitHub
+  const [repositorios, setRepositorios] = useState<any[]>([]);
+  const [loadingRepos, setLoadingRepos] = useState(true);
 
   const experiencias = [
     {
@@ -56,6 +44,59 @@ export default function Habilidades() {
   const [index, setIndex] = useState(0);
   const [indexExp, setIndexExp] = useState(0);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  // 🔹 Función auxiliar para obtener color del lenguaje
+  const getLanguageColor = (language: string | null): string => {
+    if (!language) return "#6b7280";
+    const colors: Record<string, string> = {
+      JavaScript: "#F7DF1E",
+      TypeScript: "#3178C6",
+      Python: "#3776AB",
+      Java: "#ED8B00",
+      HTML: "#E34F26",
+      CSS: "#1572B6",
+      React: "#61DAFB",
+      Angular: "#DD0031",
+      "Node.js": "#339933",
+      PHP: "#777BB4",
+      Ruby: "#CC342D",
+      Go: "#00ADD8",
+      Rust: "#000000",
+      C: "#A8B9CC",
+      "C++": "#00599C",
+      "C#": "#239120",
+    };
+    return colors[language] || "#6b7280";
+  };
+
+  // 🔹 Obtener repositorios de GitHub
+  useEffect(() => {
+    const fetchRepositorios = async () => {
+      try {
+        setLoadingRepos(true);
+        const response = await fetch("https://api.github.com/users/ricardoariasm762/repos?sort=updated&per_page=100&type=all");
+        if (response.ok) {
+          const data = await response.json();
+          // Mostrar todos los repositorios públicos (incluyendo forks)
+          // Ordenar por fecha de actualización (más recientes primero)
+          const reposOrdenados = data
+            .filter((repo: any) => !repo.archived) // Excluir repositorios archivados
+            .sort((a: any, b: any) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+          setRepositorios(reposOrdenados);
+        } else {
+          console.error("Error al obtener repositorios:", response.statusText);
+          setRepositorios([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener repositorios:", error);
+        setRepositorios([]);
+      } finally {
+        setLoadingRepos(false);
+      }
+    };
+
+    fetchRepositorios();
+  }, []);
 
 
   const nextExp = () => setIndexExp((prev) => (prev + 1) % experiencias.length);
@@ -150,6 +191,15 @@ export default function Habilidades() {
                     style={{ zIndex }}
                   >
                     <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-3xl w-72 h-[400px] flex flex-col justify-center items-center text-center shadow-lg">
+                      <div className="mb-6">
+                        {hab.icon && (
+                          <hab.icon 
+                            size={80} 
+                            style={{ color: hab.color }}
+                            className="transition-transform duration-300 hover:scale-110"
+                          />
+                        )}
+                      </div>
                       <h3 className="font-semibold text-lg">{hab.nombre}</h3>
                       <p className="text-[color:var(--muted)] text-sm mt-3 px-4">{hab.desc}</p>
                     </div>
@@ -215,62 +265,125 @@ export default function Habilidades() {
         </div>
       </section>
 
-      {/* 🔹 PROYECTOS CON ACORDEÓN */}
+      {/* 🔹 PROYECTOS CON ACORDEÓN - REPOSITORIOS DE GITHUB */}
       <section id="proyectos" className="py-20 px-10 text-center">
         <h2 className="text-3xl font-bold mb-8">{t("sections.projects.title")}</h2>
 
         <div className="max-w-4xl mx-auto space-y-6 text-left">
-          {proyectos.map((proyecto, i) => (
-            <div
-              key={i}
-              className="bg-[#2831A7] shadow-md rounded-2xl overflow-hidden border border-[color:var(--border)]"
-            >
-              <button
-                onClick={() => toggleAcordeon(i)}
-                className="w-full flex justify-between items-center px-6 py-4 font-semibold text-[color:var(--foreground)] hover:bg-[color:var(--surface)]/80 transition"
-              >
-                {proyecto.titulo}
-                <span className="text-xl">{activeIndex === i ? "−" : "+"}</span>
-              </button>
-
-              <AnimatePresence>
-                {activeIndex === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="px-6 pb-6"
-                    style={{ backgroundColor: "rgba(128, 128, 128, 0.1)" }}
-                  >
-                    <p className="text-[color:var(--muted)] mb-4">{proyecto.descripcion}</p>
-                    {proyecto.imagenes ? (
-                      <div className="flex flex-row gap-4">
-                        {proyecto.imagenes.map((img, idx) => (
-                          <Image
-                            key={idx}
-                            src={img}
-                            alt={`${proyecto.titulo} - ${idx + 1}`}
-                            width={500}
-                            height={224}
-                            className="rounded-lg shadow-md w-1/2 h-56 object-cover"
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <Image
-                        src={proyecto.imagen}
-                        alt={proyecto.titulo}
-                        width={800}
-                        height={224}
-                        className="rounded-lg shadow-md w-full h-56 object-cover"
-                      />
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          {loadingRepos ? (
+            <div className="text-center py-12">
+              <p className="text-[color:var(--muted)]">Cargando repositorios...</p>
             </div>
-          ))}
+          ) : repositorios.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-[color:var(--muted)]">No se encontraron repositorios.</p>
+            </div>
+          ) : (
+            repositorios.map((repo, i) => (
+              <div
+                key={repo.id}
+                className="bg-[#2831A7] shadow-md rounded-2xl overflow-hidden border border-[color:var(--border)]"
+              >
+                <button
+                  onClick={() => toggleAcordeon(i)}
+                  className="w-full flex justify-between items-center px-6 py-4 font-semibold text-[color:var(--foreground)] hover:bg-[color:var(--surface)]/80 transition"
+                >
+                  <div className="flex items-center gap-3">
+                    <FaGithub size={20} className="text-[color:var(--foreground)]" />
+                    <span>{repo.name}</span>
+                    {repo.fork && (
+                      <span className="text-xs px-2 py-1 bg-blue-500/20 text-blue-300 rounded">Fork</span>
+                    )}
+                  </div>
+                  <span className="text-xl">{activeIndex === i ? "−" : "+"}</span>
+                </button>
+
+                <AnimatePresence>
+                  {activeIndex === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="px-6 pb-6"
+                      style={{ backgroundColor: "rgba(128, 128, 128, 0.1)" }}
+                    >
+                      {repo.description && (
+                        <p className="text-[color:var(--muted)] mb-4">{repo.description}</p>
+                      )}
+                      
+                      {/* Información del repositorio */}
+                      <div className="flex flex-wrap gap-4 mb-4 text-sm">
+                        {repo.language && (
+                          <div className="flex items-center gap-2">
+                            <span 
+                              className="w-3 h-3 rounded-full" 
+                              style={{ backgroundColor: getLanguageColor(repo.language) }}
+                            ></span>
+                            <span className="text-[color:var(--muted)]">{repo.language}</span>
+                          </div>
+                        )}
+                        {repo.stargazers_count > 0 && (
+                          <div className="flex items-center gap-1 text-[color:var(--muted)]">
+                            <span>⭐</span>
+                            <span>{repo.stargazers_count}</span>
+                          </div>
+                        )}
+                        {repo.forks_count > 0 && (
+                          <div className="flex items-center gap-1 text-[color:var(--muted)]">
+                            <span>🍴</span>
+                            <span>{repo.forks_count}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1 text-[color:var(--muted)]">
+                          <span>📅</span>
+                          <span>Actualizado: {new Date(repo.updated_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Botones de enlaces */}
+                      <div className="flex flex-wrap gap-3 mb-4">
+                        <a
+                          href={repo.html_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-[#24292e] hover:bg-[#2f363d] text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                        >
+                          <FaGithub size={18} />
+                          Ver en GitHub
+                        </a>
+                        {repo.homepage && (
+                          <a
+                            href={repo.homepage}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                          >
+                            <FaExternalLinkAlt size={16} />
+                            Ver Demo
+                          </a>
+                        )}
+                      </div>
+
+                      {/* Topics/Tags */}
+                      {repo.topics && repo.topics.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {repo.topics.map((topic: string) => (
+                            <span
+                              key={topic}
+                              className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs"
+                            >
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))
+          )}
         </div>
       </section>
 
