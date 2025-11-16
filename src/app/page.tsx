@@ -21,8 +21,21 @@ export default function Habilidades() {
     { nombre: "Node.js", desc: "Desarrollo backend eficiente y escalable.", icon: SiNodedotjs, color: "#339933" },
   ];
 
-  // Estado para repositorios de GitHub
-  const [repositorios, setRepositorios] = useState<any[]>([]);
+  type GithubRepo = {
+    id: number;
+    name: string;
+    fork: boolean;
+    archived: boolean;
+    description: string | null;
+    language: string | null;
+    stargazers_count: number;
+    forks_count: number;
+    updated_at: string;
+    html_url: string;
+    homepage?: string | null;
+    topics?: string[];
+  };
+  const [repositorios, setRepositorios] = useState<GithubRepo[]>([]);
   const [loadingRepos, setLoadingRepos] = useState(true);
 
   const experiencias = [
@@ -76,12 +89,12 @@ export default function Habilidades() {
         setLoadingRepos(true);
         const response = await fetch("https://api.github.com/users/ricardoariasm762/repos?sort=updated&per_page=100&type=all");
         if (response.ok) {
-          const data = await response.json();
+          const data = (await response.json()) as GithubRepo[];
           // Mostrar todos los repositorios públicos (incluyendo forks)
           // Ordenar por fecha de actualización (más recientes primero)
           const reposOrdenados = data
-            .filter((repo: any) => !repo.archived) // Excluir repositorios archivados
-            .sort((a: any, b: any) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+            .filter((repo) => !repo.archived)
+            .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
           setRepositorios(reposOrdenados);
         } else {
           console.error("Error al obtener repositorios:", response.statusText);
