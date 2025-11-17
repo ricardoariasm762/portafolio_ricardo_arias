@@ -9,7 +9,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-cover bg-center bg-no-repeat min-h-[500px] md:h-[500px] flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 md:px-10 lg:px-20 py-8 md:py-0"
+      className="relative bg-cover bg-center bg-no-repeat min-h-[726px] md:h-[726px] flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 md:px-10 lg:px-20 py-8 md:py-0"
       style={{ backgroundImage: "url('/hero.jpg')" }}
     >
       <div className="absolute inset-0 bg-black/30"></div>

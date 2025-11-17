@@ -7,12 +7,15 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import { useI18n } from "../i18n/I18nProvider";
-import { SiHtml5, SiCss3, SiJavascript, SiReact, SiAngular, SiNodedotjs, SiDjango } from "react-icons/si";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { SiHtml5, SiCss3, SiJavascript, SiReact, SiAngular, SiNodedotjs, SiDjango, SiPython, SiDotnet } from "react-icons/si";
+import { FaGithub, FaExternalLinkAlt, FaJava } from "react-icons/fa";
 
 export default function Habilidades() {
   const { t } = useI18n();
   const habilidades = [
+    { nombre: "Python", desc: "Desarrollo backend y scripting eficiente.", icon: SiPython, color: "#3776AB" },
+    { nombre: "Java", desc: "POO y aplicaciones empresariales.", icon: FaJava, color: "#ED8B00" },
+    { nombre: "C#", desc: "Desarrollo con .NET para aplicaciones robustas.", icon: SiDotnet, color: "#512BD4" },
     { nombre: "HTML", desc: "Estructuración semántica de páginas web.", icon: SiHtml5, color: "#E34F26" },
     { nombre: "CSS", desc: "Diseño adaptable y uso de frameworks modernos.", icon: SiCss3, color: "#1572B6" },
     { nombre: "JavaScript", desc: "Desarrollo dinámico del lado del cliente.", icon: SiJavascript, color: "#F7DF1E" },
@@ -43,14 +46,17 @@ export default function Habilidades() {
     {
       titulo: t("experience.tecInv.title"),
       desc: t("experience.tecInv.desc"),
+      imgSrc: "/investigacion.jpg",
     },
     {
       titulo: t("experience.quimica.title"),
       desc: t("experience.quimica.desc"),
+      imgSrc: "/quimica.jpg",
     },
     {
       titulo: t("experience.diseno.title"),
       desc: t("experience.diseno.desc"),
+      imgSrc: "/diseño.jpg",
     },
   ];
 
@@ -235,7 +241,6 @@ export default function Habilidades() {
                 ></div>
               ))}
             </div>
-            <div className="ml-4 w-28 h-1 bg-gradient-to-r from-blue-500 to-indigo-700 rounded-full"></div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -474,9 +479,23 @@ export default function Habilidades() {
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                     style={{ zIndex }}
                   >
-                    <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-3xl w-72 h-[400px] flex flex-col justify-center items-center text-center shadow-lg">
-                      <h3 className="font-semibold text-lg">{exp.titulo}</h3>
-                      <p className="text-[color:var(--muted)] text-sm mt-3 px-4">{exp.desc}</p>
+                    <div className="relative rounded-3xl w-72 h-[400px] overflow-hidden border border-[color:var(--border)] shadow-lg">
+                      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${exp.imgSrc})` }}></div>
+                      <div className="absolute inset-0 bg-black/40"></div>
+                      <div className="relative z-10 h-full w-full flex flex-col justify-end items-center text-center p-4">
+                        <h3
+                          className="font-semibold text-lg text-white"
+                          style={{textShadow: "0 0 3px rgba(0,0,0,0.9), 1px 1px 0 #000, -1px -1px 0 #000" }}
+                        >
+                          {exp.titulo}
+                        </h3>
+                        <p
+                          className="text-sm mt-3 px-2 text-white/90"
+                          style={{textShadow: "0 0 2px rgba(0,0,0,0.85), 1px 1px 0 #000, -1px -1px 0 #000" }}
+                        >
+                          {exp.desc}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 );
@@ -496,7 +515,7 @@ export default function Habilidades() {
                 ></div>
               ))}
             </div>
-            <div className="ml-4 w-28 h-1 bg-gradient-to-r from-blue-500 to-indigo-700 rounded-full"></div>
+            
           </div>
 
           <div className="flex items-center gap-4">
