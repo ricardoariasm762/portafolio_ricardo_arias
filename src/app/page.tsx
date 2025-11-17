@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import { useI18n } from "../i18n/I18nProvider";
-import { SiHtml5, SiCss3, SiJavascript, SiReact, SiAngular, SiNodedotjs } from "react-icons/si";
+import { SiHtml5, SiCss3, SiJavascript, SiReact, SiAngular, SiNodedotjs, SiDjango } from "react-icons/si";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 export default function Habilidades() {
@@ -19,6 +19,7 @@ export default function Habilidades() {
     { nombre: "React", desc: "Creación de interfaces interactivas y reactivas.", icon: SiReact, color: "#61DAFB" },
     { nombre: "Angular", desc: "Desarrollo de aplicaciones SPA estructuradas.", icon: SiAngular, color: "#DD0031" },
     { nombre: "Node.js", desc: "Desarrollo backend eficiente y escalable.", icon: SiNodedotjs, color: "#339933" },
+    { nombre: "Django", desc: "Desarrollo backend con Django y APIs robustas.", icon: SiDjango, color: "#092E20" },
   ];
 
   type GithubRepo = {

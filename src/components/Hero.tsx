@@ -20,12 +20,19 @@ export default function Hero() {
           {t("hero.description")}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <button className="px-4 sm:px-5 py-2 rounded-lg font-semibold shadow bg-[color:var(--primary)] text-[color:var(--primary-foreground)] hover:opacity-90 transition text-sm sm:text-base">
+          <a
+            href="/CV%20Ricardo%20Arias.pdf"
+            download
+            className="px-4 sm:px-5 py-2 rounded-lg font-semibold shadow bg-[color:var(--primary)] text-[color:var(--primary-foreground)] hover:opacity-90 transition text-sm sm:text-base"
+          >
             {t("hero.downloadCv")}
-          </button>
-          <button className="px-4 sm:px-5 py-2 rounded-lg font-semibold shadow bg-[color:var(--surface)] text-[color:var(--foreground)] hover:opacity-90 transition text-sm sm:text-base">
+          </a>
+          <a
+            href="#contacto"
+            className="px-4 sm:px-5 py-2 rounded-lg font-semibold shadow bg-[color:var(--surface)] text-[color:var(--foreground)] hover:opacity-90 transition text-sm sm:text-base"
+          >
             {t("hero.contacts")}
-          </button>
+          </a>
         </div>
       </div>
 

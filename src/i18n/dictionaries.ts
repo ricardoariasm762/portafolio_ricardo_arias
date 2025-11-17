@@ -28,6 +28,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     "sections.contact.title": "Contactos",
 
     "footer.copyright": "© 2025 Ricardo Arias. Todos los derechos reservados.",
+    "footer.bio": "Soy estudiante de ingeniería de software, apasionado por la innovación y el trabajo en equipo.",
     "lang.es": "ES",
     "lang.en": "EN",
 
@@ -59,11 +60,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
 
     // Experience
     "experience.tecInv.title": "Técnico Investigación Judicial",
-    "experience.tecInv.desc": "Graduado del Colegio la Presentación - Nariño",
+    "experience.tecInv.desc": "Instituto Tecnico Colsup",
     "experience.quimica.title": "2 Semestres Química",
     "experience.quimica.desc": "Universidad de Nariño",
     "experience.diseno.title": "Diseño Gráfico",
-    "experience.diseno.desc": "Formación técnica en Adobe y Figma",
+    "experience.diseno.desc": "Formación técnica en Corel Draw, Adobe y Figma",
   },
   en: {
     "nav.home": "Home",
@@ -90,6 +91,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     "sections.contact.title": "Contacts",
 
     "footer.copyright": "© 2025 Ricardo Arias. All rights reserved.",
+    "footer.bio": "I am a Software Engineering student, passionate about innovation and teamwork.",
     "lang.es": "ES",
     "lang.en": "EN",
 
@@ -121,11 +123,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
 
     // Experience
     "experience.tecInv.title": "Judicial Investigation Technician",
-    "experience.tecInv.desc": "Graduate of Colegio la Presentación - Nariño",
+    "experience.tecInv.desc": "Colsup Technical Institute",
     "experience.quimica.title": "Chemistry - 2 Semesters",
     "experience.quimica.desc": "University of Nariño",
     "experience.diseno.title": "Graphic Design",
-    "experience.diseno.desc": "Technical training in Adobe and Figma",
+    "experience.diseno.desc": "Technical training in Corel Draw, Adobe and Figma",
   },
 };
 
