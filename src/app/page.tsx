@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
@@ -118,11 +118,51 @@ export default function Habilidades() {
     fetchRepositorios();
   }, []);
 
+  
 
-  const nextExp = () => setIndexExp((prev) => (prev + 1) % experiencias.length);
-  const prevExp = () => setIndexExp((prev) => (prev - 1 + experiencias.length) % experiencias.length);
-  const nextSlide = () => setIndex((prev) => (prev + 1) % habilidades.length);
-  const prevSlide = () => setIndex((prev) => (prev - 1 + habilidades.length) % habilidades.length);
+
+  const nextExp = useCallback(() => setIndexExp((prev) => (prev + 1) % experiencias.length), [experiencias.length]);
+  const prevExp = useCallback(() => setIndexExp((prev) => (prev - 1 + experiencias.length) % experiencias.length), [experiencias.length]);
+  const nextSlide = useCallback(() => setIndex((prev) => (prev + 1) % habilidades.length), [habilidades.length]);
+  const prevSlide = useCallback(() => setIndex((prev) => (prev - 1 + habilidades.length) % habilidades.length), [habilidades.length]);
+
+  useEffect(() => {
+    const habilidadesEl = document.getElementById("habilidades");
+    const experienciaEl = document.getElementById("experiencia");
+    let startX1 = 0;
+    let startX2 = 0;
+    const threshold = 50;
+
+    const onStart1 = (e: TouchEvent) => {
+      startX1 = e.touches[0].clientX;
+    };
+    const onEnd1 = (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - startX1;
+      if (dx > threshold) prevSlide();
+      else if (dx < -threshold) nextSlide();
+    };
+
+    const onStart2 = (e: TouchEvent) => {
+      startX2 = e.touches[0].clientX;
+    };
+    const onEnd2 = (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - startX2;
+      if (dx > threshold) prevExp();
+      else if (dx < -threshold) nextExp();
+    };
+
+    habilidadesEl?.addEventListener("touchstart", onStart1, { passive: true });
+    habilidadesEl?.addEventListener("touchend", onEnd1, { passive: true });
+    experienciaEl?.addEventListener("touchstart", onStart2, { passive: true });
+    experienciaEl?.addEventListener("touchend", onEnd2, { passive: true });
+
+    return () => {
+      habilidadesEl?.removeEventListener("touchstart", onStart1);
+      habilidadesEl?.removeEventListener("touchend", onEnd1);
+      experienciaEl?.removeEventListener("touchstart", onStart2);
+      experienciaEl?.removeEventListener("touchend", onEnd2);
+    };
+  }, [prevSlide, nextSlide, prevExp, nextExp]);
 
   // 🔹 Scroll suave entre secciones
   useEffect(() => {
@@ -163,7 +203,7 @@ export default function Habilidades() {
 
         {/* Slider principal */}
         <div className="relative flex justify-center items-center" style={{ perspective: "1000px" }}>
-          <div className="w-full max-w-5xl overflow-visible">
+          <div className="w-full max-w-5xl overflow-hidden">
             <div className="relative h-[400px] flex items-center justify-center">
               {habilidades.map((hab, i) => {
                 const diff = i - index;
@@ -432,7 +472,7 @@ export default function Habilidades() {
       <section id="experiencia" className="py-20 px-6 text-center relative">
         <h2 className="text-3xl font-bold mb-6">{t("sections.experience.title")}</h2>
         <div className="relative flex justify-center items-center" style={{ perspective: "1000px" }}>
-          <div className="w-full max-w-5xl overflow-visible">
+          <div className="w-full max-w-5xl overflow-hidden">
             <div className="relative h-[400px] flex items-center justify-center">
               {experiencias.map((exp, i) => {
                 const diff = i - indexExp;
