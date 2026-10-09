@@ -3,27 +3,34 @@
 import { useI18n } from "../i18n/I18nProvider";
 
 export default function LanguageSwitcher() {
-  const { lang, setLang, t } = useI18n();
+  const { lang, setLang } = useI18n();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="inline-flex items-center p-0.5 rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/90 backdrop-blur-md">
       <button
+        type="button"
         onClick={() => setLang("es")}
         aria-pressed={lang === "es"}
-        className={`px-3 py-1 rounded-md text-sm transition ${lang === "es" ? "bg-[color:var(--primary)] text-[color:var(--primary-foreground)]" : "bg-[color:var(--surface)] text-[color:var(--foreground)]"}`}
+        className={`px-2.5 py-1 rounded-full text-xs font-semibold tracking-wider transition-all duration-200 ${
+          lang === "es"
+            ? "bg-[#38bdf8] text-[#030712] shadow-sm shadow-cyan-500/20"
+            : "text-[color:var(--muted)] hover:text-[color:var(--foreground)]"
+        }`}
       >
-        {t("lang.es")}
+        ES
       </button>
       <button
+        type="button"
         onClick={() => setLang("en")}
         aria-pressed={lang === "en"}
-        className={`px-3 py-1 rounded-md text-sm transition ${lang === "en" ? "bg-[color:var(--primary)] text-[color:var(--primary-foreground)]" : "bg-[color:var(--surface)] text-[color:var(--foreground)]"}`}
+        className={`px-2.5 py-1 rounded-full text-xs font-semibold tracking-wider transition-all duration-200 ${
+          lang === "en"
+            ? "bg-[#38bdf8] text-[#030712] shadow-sm shadow-cyan-500/20"
+            : "text-[color:var(--muted)] hover:text-[color:var(--foreground)]"
+        }`}
       >
-        {t("lang.en")}
+        EN
       </button>
     </div>
   );
 }
-
-
-

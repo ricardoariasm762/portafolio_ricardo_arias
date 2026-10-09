@@ -2,29 +2,38 @@
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-type ThemeChoice = "light" | "dark" | "system";
+export type Theme = "light" | "dark";
 
 type ThemeContextValue = {
-  theme: ThemeChoice;
-  setTheme: (t: ThemeChoice) => void;
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+  toggleTheme: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-function applyThemeToDocument(choice: ThemeChoice) {
+function applyThemeToDocument(theme: Theme) {
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
-  if (choice === "system") {
-    root.removeAttribute("data-theme");
+
+  root.setAttribute("data-theme", theme);
+  if (theme === "dark") {
+    root.classList.add("dark");
   } else {
-    root.setAttribute("data-theme", choice);
+    root.classList.remove("dark");
   }
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeChoice>(() => {
-    if (typeof window === "undefined") return "system";
-    const stored = window.localStorage.getItem("theme-choice") as ThemeChoice | null;
-    return stored ?? "system";
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "dark";
+    const stored = window.localStorage.getItem("theme-choice") as Theme | null;
+    if (stored === "light" || stored === "dark") {
+      return stored;
+    }
+    // Auto-detect user's system OS theme
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return prefersDark ? "dark" : "light";
   });
 
   useEffect(() => {
@@ -34,16 +43,30 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [theme]);
 
+  // Listen for real-time OS preference changes if the user hasn't set an explicit override
   useEffect(() => {
-    if (theme !== "system") return;
     const mm = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = () => applyThemeToDocument("system");
+    const handler = (e: MediaQueryListEvent) => {
+      const stored = window.localStorage.getItem("theme-choice");
+      if (!stored) {
+        const nextTheme: Theme = e.matches ? "dark" : "light";
+        setThemeState(nextTheme);
+      }
+    };
     mm.addEventListener?.("change", handler);
     return () => mm.removeEventListener?.("change", handler);
-  }, [theme]);
+  }, []);
+
+  const toggleTheme = () => {
+    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ theme, setTheme: setThemeState }),
+    () => ({
+      theme,
+      setTheme: setThemeState,
+      toggleTheme,
+    }),
     [theme]
   );
 
@@ -55,9 +78,3 @@ export function useTheme() {
   if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
   return ctx;
 }
-
-
-
-
-
-
